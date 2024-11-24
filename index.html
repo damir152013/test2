@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Інтернет-магазин</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            padding: 10px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #555;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background-color: #888;
+        }
+
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .product {
+            background-color: white;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            text-align: center;
+        }
+
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .product h3 {
+            font-size: 1.3em;
+            margin: 10px 0;
+        }
+
+        .product p {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .product button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .product button:hover {
+            background-color: #218838;
+        }
+
+        .cart {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart:hover {
+            background-color: #218838;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 400px;
+            text-align: center;
+        }
+
+        .modal button {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal button:hover {
+            background-color: #c82333;
+        }
+
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        .footer p {
+            margin: 0;
+        }
+
+        .order-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px auto;
+            width: 50%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-form input, .order-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .order-form button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .order-form button:hover {
+            background-color: #218838;
+        }
+
+        .delivery-info {
+            background-color: #f1f1f1;
+            padding: 15px;
+            text-align: center;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Мій Інтернет-Магазин</h1>
+</header>
+
+<nav>
+    <a href="#">Головна</a>
+    <a href="#">Товари</a>
+    <a href="#">Контакти</a>
+</nav>
+
+<!-- Список продуктів -->
+<div class="product-list" id="product-list">
+    <!-- Продукт 1 -->
+    <div class="product">
+        <img src="https://via.placeholder.com/200?text=Product+1" alt="Продукт 1">
+        <h3>Продукт 1</h3>
+        <p>Ціна: 500 грн</p>
+        <button onclick="addToCart('Продукт 1', 500)">Додати до кошика</button>
+    </div>
+
+    <!-- Продукт 2 -->
+    <div class="product">
+        <img src="https://via.placeholder.com/200?text=Product+2" alt="Продукт 2">
+        <h3>Продукт 2</h3>
+        <p>Ціна: 800 грн</p>
+        <button onclick="addToCart('Продукт 2', 800)">Додати до кошика</button>
+    </div>
+
+    <!-- Продукт 3 -->
+    <div class="product">
+        <img src="https://via.placeholder.com/200?text=Product+3" alt="Продукт 3">
+        <h3>Продукт 3</h3>
+        <p>Ціна: 1200 грн</p>
+        <button onclick="addToCart('Продукт 3', 1200)">Додати до кошика</button>
+    </div>
+</div>
+
+<!-- Кошик -->
+<button class="cart" onclick="showCart()">Переглянути кошик (0)</button>
+
+<!-- Модальне вікно кошика -->
+<div class="modal" id="cartModal">
+    <div class="modal-content">
+        <h3>Ваш кошик</h3>
+        <ul id="cartItems"></ul>
+        <p id="totalPrice">Загальна сума: 0 грн</p>
+        <button onclick="closeCart()">Закрити</button>
+    </div>
+</div>
+
+<!-- Інформація про доставку -->
+<div class="delivery-info">
+    <h3>Доставка та оплата</h3>
+    <p>Доставка здійснюється по всій Україні. Оплата при отриманні або карткою онлайн.</p>
+</div>
+
+<!-- Форма замовлення -->
+<div class="order-form">
+    <h3>Оформити замовлення</h3>
+    <input type="text" id="name" placeholder="Ваше ім'я" required>
+    <input type="email" id="email" placeholder="Ваш email" required>
+    <textarea id="address" placeholder="Адреса доставки" rows="4" required></textarea>
+    <button onclick="submitOrder()">Замовити</button>
+</div>
+
+<!-- Нижній колонтитул -->
+<div class="footer">
+    <p>Телефон для довідок: <strong>(044) 123-45-67</strong></p>
+    <p>&copy; 2024 Мій Інтернет-Магазин. Всі права захищені.</p>
+</div>
+
+<script>
+    let cart = [];
+    let totalPrice = 0;
+
+    // Функція додавання товару в кошик
+    function addToCart(product, price) {
+        cart.push({ product, price });
+        totalPrice += price;
+        updateCart();
+    }
+
+    // Оновлення кількості товарів в кошику
+    function updateCart() {
+        const cartButton = document.querySelector('.cart');
+        cartButton.textContent = Переглянути кошик (${cart.length});
+    }
+
+    // Показати вміст кошика
+    function showCart() {
+        const cartModal = document.getElementById('cartModal');
+        const cartItems = document.getElementById('cartItems');
+        const total = document.getElementById('totalPrice');
+        
+        cartItems.innerHTML = '';
+        cart.forEach(item => {
+            const listItem = document.createElement('li');
+            listItem.textContent = ${item.product} - ${item.price} грн;
+            cartItems.appendChild(listItem);
+        });
+        
+        total.textContent = Загальна сума: ${totalPrice} грн;
+        cartModal.style.display = 'flex';
+    }
+
+    // Закрити модальне вікно кошика
+    function closeCart() {
+        const cartModal = document.getElementById('cartModal');
+        cartModal.style.display = 'none';
+    }
+
+    // Функція для оформлення замовлення
+    function submitOrder() {
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const address = document.getElementById('address').value;
+
+        if (name && email && address) {
+            alert(`Замовлення прийняте!\n\nІм'я: ${name}\nEmail: ${email}\nАдреса: ${address}\nЗагальна сума: ${totalPrice} грн`);} else {
+            alert('Будь ласка, заповніть всі поля!');
+        }
+    }
+</script>
+
+</body>
+</html>
